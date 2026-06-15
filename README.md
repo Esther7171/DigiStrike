@@ -19,7 +19,7 @@
 [![Cost](https://img.shields.io/badge/Hardware%20Cost-%3C%20₹300%20(~%243)-brightgreen?style=for-the-badge)](https://github.com/Esther7171/-DigiStrike)
 [![Execution](https://img.shields.io/badge/Execution%20Time-~24.3s-orange?style=for-the-badge)](https://github.com/Esther7171/-DigiStrike)
 
-> **Plug in. Register as keyboard. Dump credentials. Exfiltrate. Vanish — in under 25 seconds.**
+> **Plug in. Register as keyboard. Dump credentials. Exfiltrate. Vanish - in under 25 seconds.**
 
 *A Digispark ATtiny85 based BadUSB cybersecurity demonstration tool built for college exhibitions and security awareness education.*
 
