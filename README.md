@@ -8,9 +8,9 @@
 
 <div align="center">
 
-# ⚡ DigiStrike
+# DigiStrike
 
-### *BadUSB WiFi Credential Exfiltrator — Digispark ATtiny85*
+### *BadUSB WiFi Credential Exfiltrator - Digispark (ATtiny85)*
 
 [![Platform](https://img.shields.io/badge/Platform-Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/Esther7171/-DigiStrike)
 [![Language](https://img.shields.io/badge/Language-Arduino%20%7C%20PowerShell-00979D?style=for-the-badge&logo=arduino&logoColor=white)](https://github.com/Esther7171/-DigiStrike)
