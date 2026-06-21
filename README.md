@@ -38,9 +38,9 @@ No drivers. No admin prompt. No antivirus alert. The OS just sees someone typing
 - Dumps all saved WiFi SSIDs and plaintext passwords via `netsh wlan`
 - Sends credentials as a file (Telegram) or formatted message (Discord)
 - Captures computer name, username and domain in the output
-- Fully automated from plug-in to exit — no interaction needed
+- Fully automated from plug-in to exit. No interaction needed
 - Works on any Windows 10 / 11 machine regardless of who is logged in
-- Repeatable — plug into as many machines as you want, it runs every time
+- Repeatable. Plug into as many machines as you want, it runs every time
 
 ---
 
@@ -54,7 +54,7 @@ The Digispark ATtiny85 is a microcontroller board the size of a USB dongle. It c
 | Clock | 16.5 MHz |
 | Flash | 8 KB (6 KB usable) |
 | Connector | USB-A built in |
-| OS Detection | HID Keyboard only — no USB storage |
+| OS Detection | HID Keyboard only. No USB storage |
 | Cost | Under ₹300 (~$3 USD) |
 
 **Where to buy:**
@@ -137,7 +137,7 @@ Outbound HTTPS traffic to Telegram or Discord is visible in router and ISP logs.
 
 ### Requirements
 
-- Arduino IDE 1.8.x — download from [arduino.cc/en/software](https://www.arduino.cc/en/software)
+- Arduino IDE 1.8.x, download from [arduino.cc/en/software](https://www.arduino.cc/en/software)
   - Use 1.8.x only. Version 2.x has upload timing issues with Digispark.
 - A Digispark ATtiny85 board
 - A Telegram bot or Discord webhook
@@ -187,7 +187,7 @@ Copy the full token including the numbers before the colon.
 
 **Private chat:**
 1. Search your bot username and send it any message (e.g. `hi`)
-2. Open this URL in a browser — replace `YOUR_TOKEN`:
+2. Open this URL in a browser (replace `YOUR_TOKEN`):
    ```
    https://api.telegram.org/botYOUR_TOKEN/getUpdates
    ```
@@ -238,7 +238,7 @@ The URL looks like this:
 https://discord.com/api/webhooks/1234567890123456789/LONG_TOKEN_HERE
 ```
 
-Keep this URL private — anyone with it can post to your channel.
+Keep this URL private. Anyone with it can post to your channel.
 
 8. Click **Save Changes**
 
@@ -290,12 +290,12 @@ DigiStrike/
 ├── LICENSE
 ├── digispark/
 │   ├── telegram/
-│   │   └── r00t_b0t.ino     Telegram version — flash to ATtiny85
+│   │   └── r00t_b0t.ino     Telegram version (flash to ATtiny85)
 │   └── discord/
-│       └── r00t_b0t.ino     Discord version — flash to ATtiny85
+│       └── r00t_b0t.ino     Discord version (flash to ATtiny85)
 └── scripts/
-    ├── void.ps1             Telegram payload — host on GitHub
-    └── null.ps1             Discord payload — host on GitHub
+    ├── void.ps1             Telegram payload (host on GitHub)
+    └── null.ps1             Discord payload (host on GitHub)
 ```
 
 ---
