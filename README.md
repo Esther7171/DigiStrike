@@ -1,9 +1,10 @@
 <!-- 
   META DESCRIPTION: DigiStrike - Digispark ATtiny85 BadUSB cybersecurity demonstration tool
   that silently dumps saved WiFi credentials via HID keyboard injection and exfiltrates them
-  to Telegram in under 25 seconds. Built for college exhibitions and security awareness.
+  to Telegram or Discord in under 25 seconds. Built for college exhibitions and security awareness.
   Keywords: BadUSB, Digispark, ATtiny85, HID attack, WiFi credential dumper, cybersecurity,
-  penetration testing, red team, Arduino, PowerShell payload, keyboard injection, USB attack.
+  penetration testing, red team, Arduino, PowerShell payload, keyboard injection, USB attack,
+  Discord webhook, Telegram bot exfiltration.
 -->
 
 <div align="center">
@@ -12,14 +13,14 @@
 
 ### *BadUSB WiFi Credential Exfiltrator | Digispark ATtiny85*
 
-[![Platform](https://img.shields.io/badge/Platform-Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/Esther7171/-DigiStrike)
-[![Language](https://img.shields.io/badge/Language-Arduino%20%7C%20PowerShell-00979D?style=for-the-badge&logo=arduino&logoColor=white)](https://github.com/Esther7171/-DigiStrike)
+[![Platform](https://img.shields.io/badge/Platform-Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/Esther7171/DigiStrike)
+[![Language](https://img.shields.io/badge/Language-Arduino%20%7C%20PowerShell-00979D?style=for-the-badge&logo=arduino&logoColor=white)](https://github.com/Esther7171/DigiStrike)
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue?style=for-the-badge)](LICENSE)
-[![Category](https://img.shields.io/badge/Category-BadUSB%20%7C%20Red%20Team-red?style=for-the-badge&logo=hackthebox&logoColor=white)](https://github.com/Esther7171/-DigiStrike)
-[![Cost](https://img.shields.io/badge/Hardware%20Cost-%3C%20₹300%20(~%243)-brightgreen?style=for-the-badge)](https://github.com/Esther7171/-DigiStrike)
-[![Execution](https://img.shields.io/badge/Execution%20Time-~24.3s-orange?style=for-the-badge)](https://github.com/Esther7171/-DigiStrike)
+[![Category](https://img.shields.io/badge/Category-BadUSB%20%7C%20Red%20Team-red?style=for-the-badge&logo=hackthebox&logoColor=white)](https://github.com/Esther7171/DigiStrike)
+[![Integration](https://img.shields.io/badge/Integration-Discord%20%7C%20Telegram-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://github.com/Esther7171/DigiStrike)
+[![Cost](https://img.shields.io/badge/Hardware%20Cost-%3C%20₹300%20(~%243)-brightgreen?style=for-the-badge)](https://github.com/Esther7171/DigiStrike)
 
-**Plug in. Register as keyboard. Dump credentials. Exfiltrate. Vanish in under 25 seconds.**
+**Plug in. Register as keyboard. Dump credentials. Exfiltrate. Vanish. Execution time adjustable via script and optimized for any machine.**
 
 *A Digispark ATtiny85 based BadUSB tool built for college exhibitions and cybersecurity awareness.*
 
@@ -45,6 +46,8 @@
 - [Zero Trace Design](#zero-trace-design)
 - [How It Works](#how-it-works)
 - [Setup Guide](#setup-guide)
+- [Integration Options](#integration-options)
+- [What Forensic Teams Can Trace](#what-forensic-teams-can-trace)
 - [File Structure](#file-structure)
 - [Disclaimer](#disclaimer)
 - [License](#license)
@@ -78,15 +81,16 @@ DigiStrike is a fully automated BadUSB payload. The moment it is plugged in, it 
 Step 01   Plugged into target PC
 Step 02   OS enumerates it as a trusted HID keyboard
 Step 03   Opens PowerShell silently via Win+R
-Step 04   Injects bot token and chat ID as environment variables
-Step 05   Pulls void.ps1 from GitHub via iex + iwr
+Step 04   Injects credentials as environment variables
+Step 05   Pulls payload script from GitHub via iex + iwr
 Step 06   Dumps all saved WiFi credentials using netsh wlan
-Step 07   Sends the credentials file to Telegram
+Step 07   Sends the credentials to Telegram or Discord
 Step 08   Deletes the temp file (randomized name each run)
 Step 09   Clears PowerShell session history and PSReadLine buffer
 Step 10   Wipes the Win+R MRU registry key
-Step 11   Exits PowerShell
-Step 12   Zero traces left on the system
+Step 11   Clears Windows Event Logs
+Step 12   Exits PowerShell
+Step 13   Zero traces left on the system
 ```
 
 No installation. No UAC prompt. No antivirus alert.
@@ -102,13 +106,12 @@ Every delay is hardcoded into the chip at flash time. The attack is fully determ
 | 1 | HID Stabilize | Wait for Windows to enumerate the device | `3.0s` |
 | 2 | Win+R | Open the Run dialog | `1.0s` |
 | 3 | PowerShell Open | Type command, send Enter, wait for window | `4.0s` |
-| 4 | Token Injection | Set `$env:TK` as environment variable | `0.4s` |
-| 5 | Chat ID Injection | Set `$env:CI` as environment variable | `0.4s` |
-| 6 | Payload Execution | Download `void.ps1`, run it, exfiltrate | `15.0s` |
-| 7 | Clean Exit | Type `exit`, close PowerShell | `0.5s` |
-| | | **Total (plug to done)** | **`~24.3s`** |
+| 4 | Credential Injection | Set env vars for token or webhook | `0.4s` |
+| 5 | Payload Execution | Download script, run it, exfiltrate | `15.0s` |
+| 6 | Clean Exit | Type `exit`, close PowerShell | `0.5s` |
+| | | **Total (plug to done)** | **`~23.9s`** |
 
-The entire attack finishes in under 25 seconds.
+Delays in the `.ino` file are fully adjustable. Increase them on slow machines or cut them down on fast ones.
 
 ---
 
@@ -142,11 +145,12 @@ Every artifact the attack leaves behind is cleaned up before the device is remov
 | PowerShell history | `Clear-History` wipes the in-session history |
 | PSReadLine history | `[PSConsoleReadLine]::ClearHistory()` clears the persistent buffer |
 | Win+R MRU registry | `RunMRU` key removed via `Remove-ItemProperty` |
+| Windows Event Logs | `wevtutil cl` clears System, Security and Application logs |
 | USB device logs | HID class devices produce no USB storage event log entries |
-| Credentials in firmware | Token and chat ID are typed live as env vars, never in the script |
-| GitHub script | `void.ps1` has zero secrets, safe to host publicly |
+| Credentials in firmware | Token or webhook URL is typed live as env vars, never in the script |
+| GitHub script | Neither `void.ps1` nor `null.ps1` contain any secrets |
 
-After the device is unplugged, there is nothing left to find.
+After the device is unplugged, there is nothing left to find on the machine.
 
 ---
 
@@ -167,16 +171,16 @@ After the device is unplugged, there is nothing left to find.
                   ▼
      ┌────────────────────┐      ┌──────────────────────┐
      │  ENV VARS INJECTED │─────►│  GITHUB PULL         │
-     │  $env:TK  token    │      │  iex(iwr void.ps1)   │
-     │  $env:CI  chatid   │      │  downloaded live     │
+     │  token or webhook  │      │  iex(iwr payload)    │
+     │  typed as keystrks │      │  downloaded live     │
      └────────────────────┘      └──────────┬───────────┘
                                             │
                   ┌─────────────────────────┘
                   ▼
      ┌────────────────────┐      ┌──────────────────────┐
-     │  WIFI CREDS DUMPED │─────►│  SENT TO TELEGRAM    │
-     │  netsh wlan        │      │  curl.exe POST       │
-     │  random tmp file   │      │  document upload     │
+     │  WIFI CREDS DUMPED │─────►│  SENT TO CHANNEL     │
+     │  netsh wlan        │      │  Telegram or Discord │
+     │  random tmp file   │      │  instant delivery    │
      └────────────────────┘      └──────────┬───────────┘
                                             │
                   ┌─────────────────────────┘
@@ -184,13 +188,14 @@ After the device is unplugged, there is nothing left to find.
      ┌────────────────────┐      ┌──────────────────────┐
      │  TRACES DESTROYED  │─────►│  DONE                │
      │  temp file         │      │                      │
-     │  PS history        │      │  Total: ~24.3s       │
+     │  PS history        │      │  Total: ~23.9s       │
      │  registry MRU      │      │  Zero artifacts      │
+     │  event logs        │      │                      │
      └────────────────────┘      └──────────────────────┘
 
   [Digispark] → HID → [Windows] → Win+R → [PowerShell] → iex → [GitHub]
                                                │
-                                        [netsh wlan] → [tmp file] → [Telegram 📱]
+                                        [netsh wlan] → [tmp file] → [Telegram or Discord 📱]
 ```
 
 ---
@@ -201,7 +206,7 @@ After the device is unplugged, there is nothing left to find.
 
 - Arduino IDE 1.8.x (recommended, 2.x has known upload timing issues with Digispark)
 - A Digispark ATtiny85 board
-- A Telegram bot for receiving the exfiltrated data
+- A Telegram bot or Discord webhook depending on which integration you use
 
 ---
 
@@ -236,16 +241,18 @@ Sketch → Include Library → Manage Libraries → search "DigiKeyboard" → In
 
 ---
 
-### Step 3: Configure the Payload
+### Step 3: Pick Your Integration
 
-Open [digispark/r00t_b0t.ino](digispark/r00t_b0t.ino) and replace the placeholders:
+Choose the `.ino` that matches your exfiltration channel and open it in Arduino IDE.
 
-```cpp
-DigiKeyboard.print("$env:TK='your-bot-token-here'");
-DigiKeyboard.print("$env:CI='-100xxxxxxxxxx'");
-```
+| Channel | File to open |
+|---------|-------------|
+| Telegram | [digispark/telegram/r00t_b0t.ino](digispark/telegram/r00t_b0t.ino) |
+| Discord | [digispark/discord/r00t_b0t.ino](digispark/discord/r00t_b0t.ino) |
 
-These values are typed as live keystrokes. They never touch disk or GitHub.
+Fill in your token or webhook URL where the placeholder says `PASTE_TOKEN_HERE`, `PASTE_CHAT_ID_HERE` or `PASTE_WEBHOOK_URL_HERE`. These values are typed as live keystrokes and never touch disk or GitHub.
+
+See [Integration Options](#integration-options) for full setup steps for each channel.
 
 ---
 
@@ -264,52 +271,106 @@ Wait for:
 >> Micronucleus done. Thank you!
 ```
 
-Done. The board is ready.
+The board is ready.
 
 ---
 
-### Step 5: Telegram Bot Setup
+## Integration Options
 
-Open Telegram → search `@BotFather` → send `/newbot` → follow the prompts.
-
-Copy the API token:
-```
-123456789:ABCDefghIJKlmnoPQRstUVwxyz
-```
-
-Get your chat ID by visiting:
-```
-https://api.telegram.org/bot<YOUR_TOKEN>/getUpdates
-```
-
-Look for `"chat":{"id": -100XXXXXXXXXX}` in the response.
-
-Paste both values into the `.ino` file as shown in Step 3 and reflash.
+DigiStrike supports two exfiltration channels. Pick one based on your setup.
 
 ---
 
-### Step 6: Deploy
+### Telegram (void.ps1)
 
-Plug the flashed Digispark into any Windows machine with saved WiFi networks. In roughly 24 seconds a `.txt` file containing all saved SSIDs and plaintext passwords will arrive in your Telegram, labelled with the target machine name and username.
+Best for personal use. Sends data directly to a Telegram bot.
+
+| Step | Action |
+|------|--------|
+| 1 | Open Telegram and search @BotFather |
+| 2 | Send /newbot and follow the prompts |
+| 3 | Copy the API token |
+| 4 | Create a group and add your bot |
+| 5 | Get chat ID via @userinfobot |
+| 6 | Open digispark/telegram/r00t_b0t.ino |
+| 7 | Replace PASTE_TOKEN_HERE with your token |
+| 8 | Replace PASTE_CHAT_ID_HERE with your chat ID |
+| 9 | Flash to Digispark |
+
+[scripts/void.ps1](scripts/void.ps1) is the payload. Host it on your GitHub as a public file.
+
+---
+
+### Discord Webhook (null.ps1)
+
+Best for team monitoring or when Telegram is unavailable.
+
+| Step | Action |
+|------|--------|
+| 1 | Open Discord and go to your server |
+| 2 | Open channel Settings |
+| 3 | Click Integrations then Webhooks |
+| 4 | Click New Webhook and copy the URL |
+| 5 | Open digispark/discord/r00t_b0t.ino |
+| 6 | Replace PASTE_WEBHOOK_URL_HERE with your webhook URL |
+| 7 | Flash to Digispark |
+
+[scripts/null.ps1](scripts/null.ps1) is the payload. Host it on your GitHub as a public file.
+
+---
+
+## What Forensic Teams Can Trace
+
+This section exists for educational awareness. Understanding what leaves traces is the foundation of defensive security.
+
+### What the script clears
+
+| Artifact | Method Used |
+|----------|-------------|
+| PowerShell session history | `Clear-History` |
+| PSReadLine persistent buffer | `[PSConsoleReadLine]::ClearHistory()` |
+| Win+R run dialog history | Registry `RunMRU` key deleted |
+| Windows Event Logs | `wevtutil cl` on System, Security and Application |
+| Temp file on disk | `Remove-Item -Force` with randomized filename |
+
+### What remains traceable
+
+| Trace | Why it persists |
+|-------|----------------|
+| Network traffic | HTTPS to Discord or Telegram is visible in router and ISP logs |
+| Windows Prefetch | `powershell.exe` prefetch file in `C:\Windows\Prefetch\` is not cleared |
+| GitHub access log | Your IP is logged when `raw.githubusercontent.com` is accessed |
+| Discord or Telegram logs | Webhook and bot token are tied to your account. IP is stored server side |
+| NTFS journal | MFT LogFile and UsnJrnl record file create and delete events |
+| RAM and pagefile | Script content may persist in memory dumps or hibernation files |
+| AMSI telemetry | Windows Defender may log script content before execution |
+
+This tool is for demonstration on your own devices only. On a real forensic investigation the network layer alone is sufficient to identify the exfiltration destination.
 
 ---
 
 ## File Structure
 
 ```
--DigiStrike/
+DigiStrike/
 ├── README.md
 ├── LICENSE
 ├── digispark/
-│   └── r00t_b0t.ino        ← ATtiny85 sketch, handles all keystrokes
+│   ├── telegram/
+│   │   └── r00t_b0t.ino        ← Telegram version
+│   └── discord/
+│       └── r00t_b0t.ino        ← Discord version
 └── scripts/
-    └── void.ps1            ← PowerShell payload, hosted on GitHub
+    ├── void.ps1                ← Telegram payload
+    └── null.ps1                ← Discord payload
 ```
 
 | File | Role |
 |------|------|
-| [digispark/r00t_b0t.ino](digispark/r00t_b0t.ino) | Flashed to the chip. Opens PS, injects env vars, fires the payload. |
-| [scripts/void.ps1](scripts/void.ps1) | Fetched at runtime. Dumps creds, exfiltrates, cleans all traces. |
+| [digispark/telegram/r00t_b0t.ino](digispark/telegram/r00t_b0t.ino) | Injects Telegram bot token and chat ID, pulls void.ps1 |
+| [digispark/discord/r00t_b0t.ino](digispark/discord/r00t_b0t.ino) | Injects Discord webhook URL, pulls null.ps1 |
+| [scripts/void.ps1](scripts/void.ps1) | Dumps WiFi creds, sends via Telegram, cleans traces |
+| [scripts/null.ps1](scripts/null.ps1) | Dumps WiFi creds, sends via Discord webhook, clears event logs |
 
 ---
 
